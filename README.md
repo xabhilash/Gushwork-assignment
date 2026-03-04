@@ -3,4 +3,4 @@ This is done as a part of Gushwork Assignment
 
 # Features
 - Image carousel with zoomed preview
-- Sticky Header behaviour
+- Sticky Header behaviour with fully responsive UI
