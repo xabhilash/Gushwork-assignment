@@ -1,27 +1,24 @@
 .site-header {
   --header-height: 74px;
-  border-bottom: 1px solid #E1E3E8;
-  background: #fff;
-  transition: box-shadow 0.28s ease;
-}
-
-.site-header.is-sticky {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   z-index: 40;
-  box-shadow: 0 6px 20px rgba(15, 23, 42, 0.08);
-  animation: header-slide-down 0.28s ease;
+  border-bottom: 1px solid #E1E3E8;
+  background: #fff;
+  transform: translateY(-100%);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.28s ease, opacity 0.2s ease, box-shadow 0.28s ease;
+  will-change: transform;
 }
 
-@keyframes header-slide-down {
-  from {
-    transform: translateY(-100%);
-  }
-  to {
-    transform: translateY(0);
-  }
+.site-header.is-sticky {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+  box-shadow: 0 6px 20px rgba(15, 23, 42, 0.08);
 }
 
 .site-header__inner {
