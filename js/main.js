@@ -1,5 +1,6 @@
 import { initNavbar } from "../components/navbar/navbar.js";
 import { initCarousel } from "../components/carousel/carousel.js";
+import { initAccordion } from "../components/accordion/accordion.js";
 
 const initMobileCarouselPlacement = () => {
   var mobileQuery = window.matchMedia("(max-width: 560px)");
@@ -40,15 +41,26 @@ function initStickyHeaderAfterFirstFold() {
   }
 
   var stickyThreshold = 0;
+  var lastScrollY = window.scrollY;
 
   function calculateThreshold() {
-    var headerHeight = header.offsetHeight || 0;
-    stickyThreshold = firstSection.offsetTop + firstSection.offsetHeight - headerHeight;
+    stickyThreshold = firstSection.offsetTop + firstSection.offsetHeight;
   }
 
-  function updateStickyState() {
-    var shouldStick = window.scrollY >= stickyThreshold;
-    header.classList.toggle("is-sticky", shouldStick);
+  function updateStickyState(currentScrollY) {
+    if (currentScrollY < stickyThreshold) {
+      header.classList.remove("is-sticky");
+      lastScrollY = currentScrollY;
+      return;
+    }
+
+    if (currentScrollY < lastScrollY) {
+      header.classList.remove("is-sticky");
+    } else if (currentScrollY > lastScrollY) {
+      header.classList.add("is-sticky");
+    }
+
+    lastScrollY = currentScrollY;
   }
 
   var scrollTicking = false;
@@ -58,18 +70,18 @@ function initStickyHeaderAfterFirstFold() {
     }
     scrollTicking = true;
     window.requestAnimationFrame(function () {
-      updateStickyState();
+      updateStickyState(window.scrollY);
       scrollTicking = false;
     });
   }
 
   calculateThreshold();
-  updateStickyState();
+  updateStickyState(window.scrollY);
 
   window.addEventListener("scroll", onScroll, { passive: true });
   window.addEventListener("resize", function () {
     calculateThreshold();
-    updateStickyState();
+    updateStickyState(window.scrollY);
   });
 }
 
@@ -118,4 +130,5 @@ document.addEventListener("DOMContentLoaded", function () {
   initMobileCarouselPlacement();
   initStickyHeaderAfterFirstFold();
   initDatasheetModal();
+  initAccordion();
 });
